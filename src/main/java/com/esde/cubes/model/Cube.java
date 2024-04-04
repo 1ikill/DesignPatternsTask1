@@ -1,15 +1,20 @@
-package com.esde.model;
+package com.esde.cubes.model;
 
-import com.esde.util.IdGenerator;
+import com.esde.cubes.observer.CubeObserver;
+import com.esde.cubes.observer.Observable;
+import com.esde.cubes.observer.impl.CubeObserverImpl;
+import com.esde.cubes.util.IdGenerator;
 
 import java.util.StringJoiner;
 
-public class Cube {
+public class Cube implements Observable {
     private int id;
     private String name;
     private Dot center;
     private double side;
     private CubeState state= CubeState.INVALID;
+
+    private CubeObserver observer = new CubeObserverImpl();
 
     public Cube(){}
 
@@ -30,6 +35,7 @@ public class Cube {
 
     public void setName(String name) {
         this.name = name;
+        notifyObservers();
     }
 
     public Dot getCenter() {
@@ -38,6 +44,7 @@ public class Cube {
 
     public void setCenter(Dot center) {
         this.center = center;
+        notifyObservers();
     }
 
     public double getSide() {
@@ -46,6 +53,7 @@ public class Cube {
 
     public void setSide(double side) {
         this.side = side;
+        notifyObservers();
     }
 
     public CubeState getState() {
@@ -54,6 +62,7 @@ public class Cube {
 
     public void setState(CubeState state) {
         this.state = state;
+        notifyObservers();
     }
 
     @Override
@@ -92,5 +101,22 @@ public class Cube {
                 .add("side=" + side)
                 .add("state=" + state)
                 .toString();
+    }
+
+    @Override
+    public void attach() {
+        observer = new CubeObserverImpl();
+    }
+
+    @Override
+    public void detach() {
+        observer = null;
+    }
+
+    @Override
+    public void notifyObservers() {
+        if (observer != null) {
+            observer.update(this);
+        }
     }
 }

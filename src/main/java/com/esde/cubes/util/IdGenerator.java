@@ -1,4 +1,4 @@
-package com.esde.util;
+package com.esde.cubes.util;
 
 public class IdGenerator {
     private static int currentId;

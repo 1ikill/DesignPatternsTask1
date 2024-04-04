@@ -1,4 +1,4 @@
-package com.esde.model;
+package com.esde.cubes.model;
 
 public enum CubeState {
     INVALID, REGULAR;

@@ -1,6 +1,7 @@
-package com.esde.creator;
+package com.esde.cubes.creator;
 
-import com.esde.model.Cube;
+import com.esde.cubes.model.Cube;
+
 import java.util.List;
 
 public interface CubeFactory {

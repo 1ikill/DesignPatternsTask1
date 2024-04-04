@@ -1,7 +1,6 @@
-package com.esde.creator.impl;
+package com.esde.cubes.util;
 
-import com.esde.creator.CubeFactory;
-import com.esde.model.Cube;
+import com.esde.cubes.model.Cube;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -9,16 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class CubeFactoryImpl implements CubeFactory {
-    @Override
-    public Cube createCube(String name, double x, double y, double z, double side) {
-        return new Cube(name, x, y, z, side);
+public class TxtParser {
+    public TxtParser(){
     }
 
-    @Override
-    public List<Cube> createCubes(String file){
+    public List<Cube> parseCubesTxt(String file){
         List<Cube> cubes = new ArrayList<>();
-        try (Stream<String> lines = Files.lines(Paths.get(getClass().getResource(file).toURI()))) {
+        try (Stream<String> lines = Files.lines(Paths.get(getClass().getResource(file).toURI()))) {//todo
             lines.forEach(line -> {
                 String[] cubeData = line.split(",");
                 if (cubeData.length == 5) {
