@@ -4,7 +4,6 @@ import com.esde.cubes.creator.CubeFactory;
 import com.esde.cubes.creator.impl.CubeFactoryImpl;
 import com.esde.cubes.model.Cube;
 import com.esde.cubes.model.Warehouse;
-
 import java.util.List;
 
 public class Main{

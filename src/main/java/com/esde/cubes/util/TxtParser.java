@@ -1,7 +1,11 @@
 package com.esde.cubes.util;
 
-import com.esde.cubes.model.Cube;
-
+import com.esde.cubes.exception.InvalidCubeDataException;
+import com.esde.cubes.validator.InputValidator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -9,30 +13,32 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class TxtParser {
+    private static final Logger logger = LogManager.getLogger();
+
+    private static final String DELIMITER = ",";
+
     public TxtParser(){
     }
 
-    public List<Cube> parseCubesTxt(String file){
-        List<Cube> cubes = new ArrayList<>();
-        try (Stream<String> lines = Files.lines(Paths.get(getClass().getResource(file).toURI()))) {//todo
+    public static List<Double[]> parseCubesTxt(String file) throws InvalidCubeDataException{
+        InputValidator inputValidator = new InputValidator();
+        List<Double[]> parsedData = new ArrayList<>();
+        try (Stream<String> lines = Files.lines(Paths.get(TxtParser.class.getResource(file).toURI()))) {
             lines.forEach(line -> {
-                String[] cubeData = line.split(",");
-                if (cubeData.length == 5) {
-                    String name = cubeData[0].trim();
-                    double centerX = Double.parseDouble(cubeData[1].trim());
-                    double centerY = Double.parseDouble(cubeData[2].trim());
-                    double centerZ = Double.parseDouble(cubeData[3].trim());
-                    double side = Double.parseDouble(cubeData[4].trim());
-
-                    Cube cube = new Cube(name, centerX, centerY, centerZ, side);
-                    cubes.add(cube);
+                String[] cubeData = line.split(DELIMITER);
+                if (inputValidator.hasFourParameters(cubeData)) {
+                    Double [] cube = inputValidator.validParams(cubeData);
+                    if (cube!=null){
+                        parsedData.add(cube);
+                    }
                 } else {
-                    System.err.println("Invalid format: " + line);
+                    logger.warn("invalid format line:" + line);
                 }
             });
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException | URISyntaxException | NullPointerException e) {
+            logger.error(e);
+            throw new InvalidCubeDataException("Error creating with reader", e);
         }
-        return cubes;
+        return parsedData;
     }
 }

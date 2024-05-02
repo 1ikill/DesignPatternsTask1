@@ -1,11 +1,12 @@
 package com.esde.cubes.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.StringJoiner;
+import java.util.List;
 
 public class Warehouse {
     private static Warehouse instance = new Warehouse();
-    private HashMap<Integer, Double> map = new HashMap<>();
+    private HashMap<Integer, List<Double>> map = new HashMap<>();
 
     private Warehouse() {
     }
@@ -14,18 +15,21 @@ public class Warehouse {
         return instance;
     }
 
-    public Double get(Integer key) {
+    public List<Double> get(Integer key) {
         return map.get(key);
     }
 
-    public Double put(Integer key, Double value) {
-        return map.put(key, value);
+    public List<Double> put(Integer key, Double volume, Double surfaceArea) {
+        List<Double> parameters = new ArrayList<>();
+        parameters.add(volume);
+        parameters.add(surfaceArea);
+        return map.put(key, parameters);
     }
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", Warehouse.class.getSimpleName() + "[", "]")
-                .add("map=" + map)
-                .toString();
+        return "Warehouse{" +
+                "map=" + map +
+                '}';
     }
 }

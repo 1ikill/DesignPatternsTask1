@@ -1,7 +1,6 @@
 package com.esde.cubes.observer;
 
 import com.esde.cubes.model.Cube;
-
 import java.util.EventObject;
 
 public class CubeEvent extends EventObject {
